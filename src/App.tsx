@@ -5,6 +5,7 @@ import DomainsPage from "./pages/DomainsPage";
 import HowToUsePage from "./pages/HowToUsePage";
 import ObjectivesPage from "./pages/ObjectivesPage";
 import InitiativesPage from "./pages/InitiativesPage";
+import InitiativeDetailPage from "./pages/InitiativeDetailPage";
 import InboxPage from "./pages/InboxPage";
 import { DEFAULT_DOMAIN_ID } from "./domains";
 
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="d/:domainId" element={<Navigate to="inbox" replace />} />
         <Route path="d/:domainId/objectives" element={<ObjectivesPage />} />
         <Route path="d/:domainId/initiatives" element={<InitiativesPage />} />
+        <Route path="d/:domainId/initiatives/:initiativeId" element={<InitiativeDetailPage />} />
         <Route path="d/:domainId/inbox" element={<InboxPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>

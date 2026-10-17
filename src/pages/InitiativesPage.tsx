@@ -1,7 +1,8 @@
 import { FormEvent, useState } from "react";
+import { Link } from "react-router-dom";
 import EditableText from "../components/EditableText";
 import { useDomain } from "../components/useDomain";
-import { useStore } from "../store";
+import { INITIATIVE_STATUSES, useStore } from "../store";
 
 export default function InitiativesPage() {
   const domain = useDomain();
@@ -71,7 +72,14 @@ export default function InitiativesPage() {
               >
                 {(editButton) => (
                   <div className="card-head">
-                    <h2>{i.title}</h2>
+                    <div className="card-title-row">
+                      <h2>
+                        <Link to={`/d/${domain.id}/initiatives/${i.id}`}>{i.title}</Link>
+                      </h2>
+                      <span className={`tag status status-${i.status ?? "backlog"}`}>
+                        {INITIATIVE_STATUSES.find((s) => s.id === (i.status ?? "backlog"))?.label}
+                      </span>
+                    </div>
                     <span className="card-actions">
                       {editButton()}
                       <button type="button" className="link-btn" onClick={() => deleteInitiative(i.id)}>

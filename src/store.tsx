@@ -13,12 +13,26 @@ export interface Objective {
   strategyIds: string[];
 }
 
+export type InitiativeStatus = "backlog" | "planned" | "in-progress" | "done";
+
+export const INITIATIVE_STATUSES: { id: InitiativeStatus; label: string }[] = [
+  { id: "backlog", label: "Backlog" },
+  { id: "planned", label: "Planned" },
+  { id: "in-progress", label: "In progress" },
+  { id: "done", label: "Done" },
+];
+
 export interface Initiative {
   id: string;
   domainId: string;
   title: string;
   // Each initiative sits under one objective; null once that objective is deleted.
   objectiveId: string | null;
+  // Detail fields are optional so initiatives saved before the detail view still load.
+  status?: InitiativeStatus; // absent means "backlog"
+  owner?: string;
+  description?: string;
+  successMeasure?: string;
 }
 
 // note: free text. task: something to do. waiting: something a person is doing for you.
@@ -53,6 +67,10 @@ interface Store extends Data {
   unlinkStrategy: (objectiveId: string, strategyId: string) => void;
   addInitiative: (domainId: string, title: string, objectiveId: string | null) => void;
   updateInitiative: (id: string, title: string) => void;
+  patchInitiative: (
+    id: string,
+    patch: Partial<Pick<Initiative, "status" | "owner" | "description" | "successMeasure">>
+  ) => void;
   setInitiativeObjective: (id: string, objectiveId: string | null) => void;
   deleteInitiative: (id: string) => void;
   addInboxItem: (item: { domainId: string; kind: InboxKind; text: string; who: string }) => void;
@@ -157,6 +175,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       setData((d) => ({
         ...d,
         initiatives: d.initiatives.map((i) => (i.id === id ? { ...i, title } : i)),
+      })),
+    patchInitiative: (id, patch) =>
+      setData((d) => ({
+        ...d,
+        initiatives: d.initiatives.map((i) => (i.id === id ? { ...i, ...patch } : i)),
       })),
     setInitiativeObjective: (id, objectiveId) =>
       setData((d) => ({
