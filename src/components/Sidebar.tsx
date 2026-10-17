@@ -1,17 +1,16 @@
-import { NavLink, useMatch, useNavigate } from "react-router-dom";
-import { DEFAULT_DOMAIN_ID, DOMAINS, findDomain } from "../domains";
+import { NavLink, useNavigate } from "react-router-dom";
+import { DOMAINS } from "../domains";
+import { useActiveDomain } from "./useDomain";
 
 const SECTIONS = [
-  { path: "", label: "Overview", end: true },
+  { path: "/inbox", label: "Inbox" },
   { path: "/objectives", label: "Objectives" },
   { path: "/initiatives", label: "Initiatives" },
-  { path: "/inbox", label: "Inbox" },
 ];
 
 export default function Sidebar({ dimmed }: { dimmed: boolean }) {
   const navigate = useNavigate();
-  const match = useMatch("/d/:domainId/*");
-  const domain = findDomain(match?.params.domainId) ?? findDomain(DEFAULT_DOMAIN_ID)!;
+  const domain = useActiveDomain();
 
   return (
     <aside className={`sidebar${dimmed ? " dimmed" : ""}`} aria-label="Domain">
@@ -31,10 +30,14 @@ export default function Sidebar({ dimmed }: { dimmed: boolean }) {
       </select>
       <nav className="sidebar-nav">
         {SECTIONS.map((s) => (
-          <NavLink key={s.label} to={`/d/${domain.id}${s.path}`} end={s.end}>
+          <NavLink key={s.label} to={`/d/${domain.id}${s.path}`}>
             {s.label}
           </NavLink>
         ))}
+      </nav>
+      {/* Global, not per domain, so it sits apart from the domain links. */}
+      <nav className="sidebar-footer" aria-label="Help">
+        <NavLink to="/how-to-use">How to use</NavLink>
       </nav>
     </aside>
   );

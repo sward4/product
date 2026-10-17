@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import StrategyPage from "./pages/StrategyPage";
 import DomainsPage from "./pages/DomainsPage";
-import DomainOverview from "./pages/DomainOverview";
+import HowToUsePage from "./pages/HowToUsePage";
 import ObjectivesPage from "./pages/ObjectivesPage";
 import InitiativesPage from "./pages/InitiativesPage";
 import InboxPage from "./pages/InboxPage";
@@ -15,7 +15,8 @@ export default function App() {
         <Route index element={<Navigate to={`/d/${DEFAULT_DOMAIN_ID}`} replace />} />
         <Route path="strategy" element={<StrategyPage />} />
         <Route path="domains" element={<DomainsPage />} />
-        <Route path="d/:domainId" element={<DomainOverview />} />
+        <Route path="how-to-use" element={<HowToUsePage />} />
+        <Route path="d/:domainId" element={<Navigate to="inbox" replace />} />
         <Route path="d/:domainId/objectives" element={<ObjectivesPage />} />
         <Route path="d/:domainId/initiatives" element={<InitiativesPage />} />
         <Route path="d/:domainId/inbox" element={<InboxPage />} />
