@@ -11,8 +11,3 @@ export const DOMAINS: Domain[] = [
   { id: "loyalty", name: "Loyalty" },
   { id: "marketplace", name: "Marketplace" },
 ];
-
-export const DEFAULT_DOMAIN_ID = "fulfilment";
-
-export const findDomain = (id: string | undefined) =>
-  DOMAINS.find((d) => d.id === id);

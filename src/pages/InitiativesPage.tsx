@@ -1,11 +1,12 @@
-import Placeholder from "../components/Placeholder";
-import { useDomain } from "../components/useDomain";
+import { Block, PageHeader } from "../components/Placeholder";
+import DomainFilter from "../components/DomainFilter";
 
 export default function InitiativesPage() {
-  const domain = useDomain();
   return (
-    <Placeholder title={`${domain.name} / Initiatives`} subtitle="Prioritised list, each under one objective.">
-      Prioritised initiatives go here.
-    </Placeholder>
+    <>
+      <PageHeader title="Initiatives" subtitle="Prioritised list. Each sits under one objective." />
+      <DomainFilter id="initiatives-domain" />
+      <Block>Prioritised initiatives go here.</Block>
+    </>
   );
 }

@@ -1,15 +1,12 @@
-import { Link } from "react-router-dom";
 import Placeholder from "../components/Placeholder";
 import { DOMAINS } from "../domains";
 
 export default function DomainsPage() {
   return (
-    <Placeholder title="Domains" subtitle="Add, merge or remove domains and assign PMs.">
-      <ul>
+    <Placeholder title="Domains" subtitle="Areas of the business, each with its own objectives and PMs.">
+      <ul className="plain-list">
         {DOMAINS.map((d) => (
-          <li key={d.id}>
-            <Link to={`/d/${d.id}`}>{d.name}</Link>
-          </li>
+          <li key={d.id}>{d.name}</li>
         ))}
       </ul>
     </Placeholder>

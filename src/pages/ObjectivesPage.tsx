@@ -1,11 +1,12 @@
-import Placeholder from "../components/Placeholder";
-import { useDomain } from "../components/useDomain";
+import { Block, PageHeader } from "../components/Placeholder";
+import DomainFilter from "../components/DomainFilter";
 
 export default function ObjectivesPage() {
-  const domain = useDomain();
   return (
-    <Placeholder title={`${domain.name} / Objectives`} subtitle="About 12 months, fairly stable.">
-      Objectives and the business strategies they support go here.
-    </Placeholder>
+    <>
+      <PageHeader title="Objectives" subtitle="About 12 months each, fairly stable. Each supports one or more strategies." />
+      <DomainFilter id="objectives-domain" />
+      <Block>Objectives and the strategies they support go here.</Block>
+    </>
   );
 }

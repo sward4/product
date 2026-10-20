@@ -1,38 +1,38 @@
-import { NavLink, useMatch, useNavigate } from "react-router-dom";
-import { DEFAULT_DOMAIN_ID, DOMAINS, findDomain } from "../domains";
+import { NavLink } from "react-router-dom";
 
-const SECTIONS = [
-  { path: "", label: "Overview", end: true },
-  { path: "/objectives", label: "Objectives" },
-  { path: "/initiatives", label: "Initiatives" },
-  { path: "/inbox", label: "Inbox" },
+// Each level of the planning hierarchy sits inside the one above it.
+const HIERARCHY = [
+  { to: "/strategy", label: "Strategy" },
+  { to: "/domains", label: "Domains" },
+  { to: "/objectives", label: "Objectives" },
+  { to: "/initiatives", label: "Initiatives" },
 ];
 
-export default function Sidebar({ dimmed }: { dimmed: boolean }) {
-  const navigate = useNavigate();
-  const match = useMatch("/d/:domainId/*");
-  const domain = findDomain(match?.params.domainId) ?? findDomain(DEFAULT_DOMAIN_ID)!;
+const MY_DAY = [
+  { to: "/today", label: "Today" },
+  { to: "/inbox", label: "Inbox" },
+];
 
+export default function Sidebar() {
   return (
-    <aside className={`sidebar${dimmed ? " dimmed" : ""}`} aria-label="Domain">
-      <label className="sidebar-label" htmlFor="domain-select">
-        Working in
-      </label>
-      <select
-        id="domain-select"
-        value={domain.id}
-        onChange={(e) => navigate(`/d/${e.target.value}`)}
-      >
-        {DOMAINS.map((d) => (
-          <option key={d.id} value={d.id}>
-            {d.name}
-          </option>
+    <aside className="sidebar" aria-label="Sections">
+      <h2 className="sidebar-heading">Plan</h2>
+      <nav className="sidebar-nav hierarchy" aria-label="Planning hierarchy">
+        {HIERARCHY.map((item, level) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            style={{ ["--level" as string]: level }}
+          >
+            {item.label}
+          </NavLink>
         ))}
-      </select>
-      <nav className="sidebar-nav">
-        {SECTIONS.map((s) => (
-          <NavLink key={s.label} to={`/d/${domain.id}${s.path}`} end={s.end}>
-            {s.label}
+      </nav>
+      <h2 className="sidebar-heading">My day</h2>
+      <nav className="sidebar-nav" aria-label="My day">
+        {MY_DAY.map((item) => (
+          <NavLink key={item.to} to={item.to}>
+            {item.label}
           </NavLink>
         ))}
       </nav>
