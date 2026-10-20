@@ -16,10 +16,6 @@ export default function Layout() {
         <NavLink to="/" className="brand">
           ProdMap
         </NavLink>
-        <nav className="topnav" aria-label="Main">
-          <NavLink to="/strategy">Strategy</NavLink>
-          <NavLink to="/domains">Domains</NavLink>
-        </nav>
       </header>
       <div className="body">
         <Sidebar dimmed={inTopSection} />

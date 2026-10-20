@@ -1,9 +1,13 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { DOMAINS } from "../domains";
 import { useActiveDomain } from "./useDomain";
+import IntegrationsNav from "./IntegrationsNav";
 
-const SECTIONS = [
-  { path: "/inbox", label: "Inbox" },
+// Planning hierarchy, top down. Strategy and Domains are global; Objectives and
+// Initiatives follow the domain selected above.
+const HIERARCHY = [
+  { to: "/strategy", label: "Strategy" },
+  { to: "/domains", label: "Domains" },
   { path: "/objectives", label: "Objectives" },
   { path: "/initiatives", label: "Initiatives" },
 ];
@@ -28,13 +32,23 @@ export default function Sidebar({ dimmed }: { dimmed: boolean }) {
           </option>
         ))}
       </select>
-      <nav className="sidebar-nav">
-        {SECTIONS.map((s) => (
-          <NavLink key={s.label} to={`/d/${domain.id}${s.path}`}>
-            {s.label}
+      <h2 className="sidebar-heading">Plan</h2>
+      <nav className="sidebar-nav hierarchy" aria-label="Planning hierarchy">
+        {HIERARCHY.map((item, level) => (
+          <NavLink
+            key={item.label}
+            to={item.to ?? `/d/${domain.id}${item.path}`}
+            style={{ ["--level" as string]: level }}
+          >
+            {item.label}
           </NavLink>
         ))}
       </nav>
+      <h2 className="sidebar-heading">My day</h2>
+      <nav className="sidebar-nav" aria-label="My day">
+        <NavLink to={`/d/${domain.id}/inbox`}>Inbox</NavLink>
+      </nav>
+      <IntegrationsNav />
       {/* Global, not per domain, so it sits apart from the domain links. */}
       <nav className="sidebar-footer" aria-label="Help">
         <NavLink to="/how-to-use">How to use</NavLink>
