@@ -7,6 +7,7 @@ import ObjectivesPage from "./pages/ObjectivesPage";
 import InitiativesPage from "./pages/InitiativesPage";
 import InitiativeDetailPage from "./pages/InitiativeDetailPage";
 import InboxPage from "./pages/InboxPage";
+import ActionsPage from "./pages/ActionsPage";
 import { DEFAULT_DOMAIN_ID } from "./domains";
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="d/:domainId/initiatives" element={<InitiativesPage />} />
         <Route path="d/:domainId/initiatives/:initiativeId" element={<InitiativeDetailPage />} />
         <Route path="d/:domainId/inbox" element={<InboxPage />} />
+        <Route path="d/:domainId/actions" element={<ActionsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

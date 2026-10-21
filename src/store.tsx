@@ -49,11 +49,22 @@ export interface InboxItem {
   createdAt: number;
 }
 
+// A prioritised to-do. Its position in `actions` is its priority within a domain.
+export interface Action {
+  id: string;
+  domainId: string;
+  text: string;
+  initiativeId: string | null; // linking is optional
+  done: boolean;
+  createdAt: number;
+}
+
 interface Data {
   strategies: Strategy[];
   objectives: Objective[];
   initiatives: Initiative[];
   inbox: InboxItem[];
+  actions: Action[];
 }
 
 interface Store extends Data {
@@ -78,6 +89,12 @@ interface Store extends Data {
     id: string,
     patch: Partial<Pick<InboxItem, "kind" | "text" | "who">>
   ) => void;
+  addAction: (domainId: string, text: string, initiativeId: string | null) => void;
+  toggleAction: (id: string) => void;
+  setActionInitiative: (id: string, initiativeId: string | null) => void;
+  deleteAction: (id: string) => void;
+  // Replaces the order of one domain's actions with the given ids (highest priority first).
+  reorderActions: (domainId: string, orderedIds: string[]) => void;
   addSampleData: () => void;
   toggleInboxItem: (id: string) => void;
   toggleStarInboxItem: (id: string) => void;
@@ -86,7 +103,7 @@ interface Store extends Data {
 
 // Placeholder persistence until data comes from the backend.
 const KEY = "pm-roadmap:v1";
-const EMPTY: Data = { strategies: [], objectives: [], initiatives: [], inbox: [] };
+const EMPTY: Data = { strategies: [], objectives: [], initiatives: [], inbox: [], actions: [] };
 
 const load = (): Data => {
   try {
@@ -187,7 +204,37 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         initiatives: d.initiatives.map((i) => (i.id === id ? { ...i, objectiveId } : i)),
       })),
     deleteInitiative: (id) =>
-      setData((d) => ({ ...d, initiatives: d.initiatives.filter((i) => i.id !== id) })),
+      setData((d) => ({
+        ...d,
+        initiatives: d.initiatives.filter((i) => i.id !== id),
+        actions: d.actions.map((a) => (a.initiativeId === id ? { ...a, initiativeId: null } : a)),
+      })),
+    addAction: (domainId, text, initiativeId) =>
+      setData((d) => ({
+        ...d,
+        actions: [
+          ...d.actions,
+          { id: uid(), domainId, text, initiativeId, done: false, createdAt: Date.now() },
+        ],
+      })),
+    toggleAction: (id) =>
+      setData((d) => ({
+        ...d,
+        actions: d.actions.map((a) => (a.id === id ? { ...a, done: !a.done } : a)),
+      })),
+    setActionInitiative: (id, initiativeId) =>
+      setData((d) => ({
+        ...d,
+        actions: d.actions.map((a) => (a.id === id ? { ...a, initiativeId } : a)),
+      })),
+    deleteAction: (id) =>
+      setData((d) => ({ ...d, actions: d.actions.filter((a) => a.id !== id) })),
+    reorderActions: (domainId, orderedIds) =>
+      setData((d) => {
+        const mine = new Map(d.actions.filter((a) => a.domainId === domainId).map((a) => [a.id, a]));
+        const ordered = orderedIds.flatMap((id) => mine.get(id) ?? []);
+        return { ...d, actions: [...d.actions.filter((a) => a.domainId !== domainId), ...ordered] };
+      }),
     addInboxItem: (item) =>
       setData((d) => ({
         ...d,

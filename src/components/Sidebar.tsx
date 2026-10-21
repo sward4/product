@@ -47,6 +47,7 @@ export default function Sidebar({ dimmed }: { dimmed: boolean }) {
       <h2 className="sidebar-heading">My day</h2>
       <nav className="sidebar-nav" aria-label="My day">
         <NavLink to={`/d/${domain.id}/inbox`}>Inbox</NavLink>
+        <NavLink to={`/d/${domain.id}/actions`}>Actions</NavLink>
       </nav>
       <IntegrationsNav />
       {/* Global, not per domain, so it sits apart from the domain links. */}
