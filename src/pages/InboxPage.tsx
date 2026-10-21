@@ -1,4 +1,6 @@
 import { FormEvent, useState } from "react";
+import { Link } from "react-router-dom";
+import ConvertToAction from "../components/ConvertToAction";
 import QuickCapture, { KIND_LABELS } from "../components/QuickCapture";
 import { useDomain } from "../components/useDomain";
 import { InboxItem, InboxKind, useStore } from "../store";
@@ -20,7 +22,7 @@ const formatTime = (ms: number) =>
     minute: "2-digit",
   });
 
-function InboxCard({ item }: { item: InboxItem }) {
+function InboxCard({ item, onConvert }: { item: InboxItem; onConvert: (item: InboxItem) => void }) {
   const { updateInboxItem, toggleInboxItem, toggleStarInboxItem, deleteInboxItem } = useStore();
   const [editing, setEditing] = useState(false);
   const [kind, setKind] = useState<InboxKind>(item.kind);
@@ -57,6 +59,21 @@ function InboxCard({ item }: { item: InboxItem }) {
         <span className="kind-tag">{KIND_LABELS[item.kind]}</span>
         <span className="inbox-card-meta">
           <time>{formatTime(item.createdAt)}</time>
+          {item.kind !== "waiting" && (
+            <button
+              type="button"
+              className="convert-btn"
+              aria-label="Convert to action"
+              title="Convert to action"
+              onClick={() => onConvert(item)}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="m8 12.5 2.8 2.8L16 9.5" />
+              </svg>
+            </button>
+          )}
           <button
             type="button"
             className="star-btn"
@@ -139,9 +156,11 @@ function InboxCard({ item }: { item: InboxItem }) {
 
 export default function InboxPage() {
   const domain = useDomain();
-  const { inbox, addInboxItem } = useStore();
+  const { inbox, initiatives, addInboxItem, addAction } = useStore();
   const [capturing, setCapturing] = useState(false);
   const [filter, setFilter] = useState<Filter>("all");
+  const [converting, setConverting] = useState<InboxItem | null>(null);
+  const [created, setCreated] = useState(false);
 
   const items = inbox.filter((i) => i.domainId === domain.id);
   // Starred first; the sort is stable, so each group stays newest-first.
@@ -189,9 +208,32 @@ export default function InboxPage() {
       ) : (
         <ul className="inbox-grid">
           {shown.map((item) => (
-            <InboxCard key={item.id} item={item} />
+            <InboxCard key={item.id} item={item} onConvert={setConverting} />
           ))}
         </ul>
+      )}
+
+      {created && (
+        <p className="inbox-toast" role="status">
+          Action created.{" "}
+          <Link to={`/d/${domain.id}/actions`}>View actions</Link>
+          <button type="button" className="ghost-btn" onClick={() => setCreated(false)}>
+            Dismiss
+          </button>
+        </p>
+      )}
+
+      {converting && (
+        <ConvertToAction
+          initialText={converting.text}
+          initiatives={initiatives.filter((i) => i.domainId === domain.id)}
+          onClose={() => setConverting(null)}
+          onCreate={(text, initiativeId) => {
+            addAction(domain.id, text, initiativeId);
+            setConverting(null);
+            setCreated(true);
+          }}
+        />
       )}
 
       {capturing && (

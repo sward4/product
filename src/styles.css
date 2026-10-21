@@ -598,3 +598,36 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 .build-note-body { flex: 1; min-width: 0; }
 .build-note .card-text { margin: 0 0 6px; overflow-wrap: anywhere; }
 .build-note.is-done .card-text { text-decoration: line-through; color: var(--muted); }
+
+/* Convert inbox item to action */
+.convert-btn {
+  padding: 0 2px;
+  background: none;
+  color: var(--ink-soft);
+  line-height: 1;
+  font-weight: 400;
+}
+.convert-btn svg { display: block; }
+.convert-btn:hover { color: var(--pen); }
+.convert-label { font-size: 13px; font-weight: 700; }
+.capture-sheet select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--paper-edge);
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+}
+.inbox-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 8px 12px;
+  border: 1px solid var(--paper-edge);
+  border-radius: 8px;
+  background: var(--note);
+}
+.inbox-toast a { color: var(--pen); }
+.action-text { white-space: pre-line; }
