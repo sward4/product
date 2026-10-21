@@ -266,35 +266,37 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* Inbox: deliberately a different look from the rest of the app (paper scratchpad) */
 .inbox {
-  --paper: #f6efdc;
-  --paper-edge: #e4d8b8;
-  --ink: #3b3326;
-  --ink-soft: #7a6e57;
-  --note: #fff1a8;
-  --task: #cfe8c6;
-  --waiting: #f9d3c2;
-  --pen: #c2410c;
+  --paper: #eeeff2;
+  --paper-edge: #d6d9e0;
+  --ink: #25272e;
+  --ink-soft: #666a75;
+  --note: #fbfbfc;
+  --task: #e1e5ec;
+  --waiting: #d2d7e1;
+  --pen: #4338ca;
+  --on-pen: #fff;
   position: relative;
   min-height: calc(100vh - 100px);
   padding: 24px;
   border: 1px solid var(--paper-edge);
   border-radius: 14px;
   background:
-    repeating-linear-gradient(transparent 0 31px, rgba(120, 100, 60, 0.12) 31px 32px),
+    repeating-linear-gradient(transparent 0 31px, rgba(100, 108, 130, 0.12) 31px 32px),
     var(--paper);
   color: var(--ink);
   font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
 }
 @media (prefers-color-scheme: dark) {
   .inbox {
-    --paper: #26221b;
-    --paper-edge: #3a3426;
-    --ink: #eadfc4;
-    --ink-soft: #a89c82;
-    --note: #5a4f1c;
-    --task: #2f4a2c;
-    --waiting: #5a3523;
-    --pen: #ff9b63;
+    --paper: #1f2126;
+    --paper-edge: #343740;
+    --ink: #e6e7ec;
+    --ink-soft: #9a9ea9;
+    --note: #2c2f36;
+    --task: #373b45;
+    --waiting: #444956;
+    --pen: #a5b4fc;
+    --on-pen: #1f2126;
   }
 }
 .inbox button, .inbox input, .inbox textarea { font-family: inherit; }
@@ -314,7 +316,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   padding: 12px 20px;
   border-radius: 999px;
   background: var(--pen);
-  color: #fff;
+  color: var(--on-pen);
   font-size: 16px;
   box-shadow: 0 4px 0 rgba(0, 0, 0, 0.18);
   transition: transform 0.08s, box-shadow 0.08s;
@@ -382,7 +384,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   font-weight: 400;
   text-decoration: underline;
 }
-.capture-save { background: var(--pen); color: #fff; padding: 6px 14px; }
+.capture-save { background: var(--pen); color: var(--on-pen); padding: 6px 14px; }
 
 /* Capture sheet (rendered inside .inbox so it inherits the paper tokens) */
 .capture-backdrop {
@@ -393,7 +395,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   align-items: center;
   justify-content: center;
   padding: 16px;
-  background: rgba(40, 32, 18, 0.45);
+  background: rgba(20, 22, 30, 0.45);
 }
 .capture-sheet {
   width: 100%;
