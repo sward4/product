@@ -600,15 +600,6 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 .build-note.is-done .card-text { text-decoration: line-through; color: var(--muted); }
 
 /* Convert inbox item to action */
-.convert-btn {
-  padding: 0 2px;
-  background: none;
-  color: var(--ink-soft);
-  line-height: 1;
-  font-weight: 400;
-}
-.convert-btn svg { display: block; }
-.convert-btn:hover { color: var(--pen); }
 .convert-label { font-size: 13px; font-weight: 700; }
 .capture-sheet select {
   width: 100%;
