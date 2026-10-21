@@ -53,6 +53,7 @@ export default function Sidebar({ dimmed }: { dimmed: boolean }) {
       {/* Global, not per domain, so it sits apart from the domain links. */}
       <nav className="sidebar-footer" aria-label="Help">
         <NavLink to="/how-to-use">How to use</NavLink>
+        <NavLink to="/build-notes">Build notes</NavLink>
       </nav>
     </aside>
   );

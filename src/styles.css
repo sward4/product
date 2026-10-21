@@ -590,3 +590,9 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   .action-row { flex-wrap: wrap; }
   .action-handle { display: none; }
 }
+
+/* Build notes */
+.build-note { display: flex; gap: 10px; align-items: flex-start; }
+.build-note-body { flex: 1; min-width: 0; }
+.build-note .card-text { margin: 0 0 6px; overflow-wrap: anywhere; }
+.build-note.is-done .card-text { text-decoration: line-through; color: var(--muted); }

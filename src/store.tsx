@@ -59,12 +59,21 @@ export interface Action {
   createdAt: number;
 }
 
+// Private scratchpad of ideas for the build itself, not roadmap content.
+export interface BuildNote {
+  id: string;
+  text: string;
+  done: boolean;
+  createdAt: number;
+}
+
 interface Data {
   strategies: Strategy[];
   objectives: Objective[];
   initiatives: Initiative[];
   inbox: InboxItem[];
   actions: Action[];
+  buildNotes: BuildNote[];
 }
 
 interface Store extends Data {
@@ -95,6 +104,9 @@ interface Store extends Data {
   deleteAction: (id: string) => void;
   // Replaces the order of one domain's actions with the given ids (highest priority first).
   reorderActions: (domainId: string, orderedIds: string[]) => void;
+  addBuildNote: (text: string) => void;
+  toggleBuildNote: (id: string) => void;
+  deleteBuildNote: (id: string) => void;
   addSampleData: () => void;
   toggleInboxItem: (id: string) => void;
   toggleStarInboxItem: (id: string) => void;
@@ -103,7 +115,7 @@ interface Store extends Data {
 
 // Placeholder persistence until data comes from the backend.
 const KEY = "pm-roadmap:v1";
-const EMPTY: Data = { strategies: [], objectives: [], initiatives: [], inbox: [], actions: [] };
+const EMPTY: Data = { strategies: [], objectives: [], initiatives: [], inbox: [], actions: [], buildNotes: [] };
 
 const load = (): Data => {
   try {
@@ -209,6 +221,18 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         initiatives: d.initiatives.filter((i) => i.id !== id),
         actions: d.actions.map((a) => (a.initiativeId === id ? { ...a, initiativeId: null } : a)),
       })),
+    addBuildNote: (text) =>
+      setData((d) => ({
+        ...d,
+        buildNotes: [{ id: uid(), text, done: false, createdAt: Date.now() }, ...d.buildNotes],
+      })),
+    toggleBuildNote: (id) =>
+      setData((d) => ({
+        ...d,
+        buildNotes: d.buildNotes.map((n) => (n.id === id ? { ...n, done: !n.done } : n)),
+      })),
+    deleteBuildNote: (id) =>
+      setData((d) => ({ ...d, buildNotes: d.buildNotes.filter((n) => n.id !== id) })),
     addAction: (domainId, text, initiativeId) =>
       setData((d) => ({
         ...d,

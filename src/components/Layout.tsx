@@ -8,7 +8,8 @@ export default function Layout() {
   const inTopSection =
     pathname.startsWith("/strategy") ||
     pathname.startsWith("/domains") ||
-    pathname.startsWith("/how-to-use");
+    pathname.startsWith("/how-to-use") ||
+    pathname.startsWith("/build-notes");
 
   return (
     <div className="app">
